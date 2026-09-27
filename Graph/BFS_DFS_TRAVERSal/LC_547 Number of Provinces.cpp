@@ -60,3 +60,60 @@ void dfs(int node,vector<bool>&visit,vector<vector<int>>&arr){
 
   }
 };
+
+
+
+
+
+
+
+// --------------------------------------- using Dsu ------------------------------------------
+// TC -> O(n + n² α(n) + n α(n)) , SC-> O(n)
+
+class Dsu{
+public:    
+    vector<int>prnt;
+    vector<int>rank;
+    Dsu(int n){
+         prnt.resize(n);
+         rank.resize(n , 1);
+         for(int i = 0 ; i < n ; i++) prnt[i] = i;
+    }
+
+    int find(int x){
+      if(prnt[x] == x) return x;
+      return prnt[x] = find(prnt[x]);
+
+    }
+    void Union(int x , int y){
+        x = find(x);
+        y = find(y);
+        if(x == y) return ;
+        if(rank[x] < rank[y]) prnt[x] = y;
+        else if(rank[x] > rank[y]) prnt[y] = x;
+        else rank[x]+=1 , prnt[y] = x;
+    }
+
+};
+
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size() ;
+        Dsu dsu(n);
+        for(int i = 0 ; i < n  ; i++){
+            for(int j = i+1; j < n ; j++){
+                    if(isConnected[i][j] == 1){
+                        dsu.Union(i , j);
+                    }
+            }
+        }
+
+        int ans = 0 ;
+        for(int i = 0 ; i < n ; i++){
+            if(i == dsu.find(i)) ans++;
+        }
+        return ans ;
+
+    }
+};
