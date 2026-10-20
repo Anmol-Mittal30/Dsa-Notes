@@ -1,6 +1,6 @@
 
 // TC -> O(n * m * 26) , SC -> O(n) , n = size of wordList , m = size of each word
-
+// very practica; use case
 class Solution {
 public:
     typedef pair<string , int>P; // {str , count to convert }
